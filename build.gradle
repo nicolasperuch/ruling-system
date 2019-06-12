@@ -16,5 +16,6 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-amqp'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.modelmapper:modelmapper:2.3.4'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
