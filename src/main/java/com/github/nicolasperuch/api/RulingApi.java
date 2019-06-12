@@ -1,6 +1,8 @@
 package com.github.nicolasperuch.api;
 
 import com.github.nicolasperuch.api.dto.RulingDto;
+import com.github.nicolasperuch.api.dto.RulingResponse;
+import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.service.RulingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.ResponseEntity.ok;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/ruling")
@@ -20,6 +22,19 @@ public class RulingApi {
 
     @PostMapping
     public ResponseEntity<?> createRuling(@RequestBody RulingDto rulingDto) {
-        return ok(rulingService.createRuling(rulingDto));
+        return Stream
+                .of(rulingDto)
+                .map(dto -> rulingService.createRuling(dto))
+                .map(this::entityToResponseDto)
+                .map(ResponseEntity::ok)
+                .findFirst()
+                .get();
+    }
+
+    public RulingResponse entityToResponseDto(RulingEntity rulingEntity){
+        RulingResponse rulingResponse = new RulingResponse();
+        rulingResponse.setId(1);
+        rulingResponse.setName("Olaew");
+        return rulingResponse;
     }
 }

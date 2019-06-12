@@ -11,6 +11,7 @@ public class RulingService {
         RulingEntity rulingEntity = new RulingEntity();
         rulingEntity.setId(1);
         rulingEntity.setName(rulingDto.getName());
+
         //should save into database here
         return rulingEntity;
     }
