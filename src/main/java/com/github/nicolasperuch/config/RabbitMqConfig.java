@@ -11,55 +11,55 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMqConfig {
+public class RabbitMqConfig extends RabbitRulingConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost", 5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory(HOST, PORT);
+        connectionFactory.setUsername(USERNAME);
+        connectionFactory.setPassword(PASSWORD);
         return connectionFactory;
     }
 
     @Bean
     public TopicExchange topicExchange() {
-        return new TopicExchange("ruling", true, false);
+        return new TopicExchange(EXCHANGE, true, false);
     }
 
     @Bean
-    public Queue rulingQueue(){
-        return new Queue("ruling-queue", true, false, false);
+    public Queue sessionStartedQueue(){
+        return new Queue(SESSION_STARTED_QUEUE, true, false, false);
     }
 
     @Bean
-    public Queue voteQueue(){
-        return new Queue("vote-queue", true, false, false);
+    public Queue sessionEndedQueue(){
+        return new Queue(SESSION_ENDED_QUEUE, true, false, false);
     }
 
     @Bean
-    public Binding bindingExchangeToRulingQueue(){
+    public Binding bindingExchangeToSessionStartedQueue(){
         return BindingBuilder
-                .bind(rulingQueue())
+                .bind(sessionStartedQueue())
                 .to(topicExchange())
-                .with("ruling-queue");
+                .with(SESSION_STARTED_QUEUE);
     }
 
     @Bean
-    public Binding bindingExchangeToVoteQueue(){
+    public Binding bindingExchangeToSessionEndedQueue(){
         return BindingBuilder
-                .bind(voteQueue())
+                .bind(sessionEndedQueue())
                 .to(topicExchange())
-                .with("vote-queue");
+                .with(SESSION_ENDED_QUEUE);
     }
 
     @Bean
     public RabbitAdmin rabbitAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
         rabbitAdmin.declareExchange(topicExchange());
-        rabbitAdmin.declareQueue(rulingQueue());
-        rabbitAdmin.declareQueue(voteQueue());
-        rabbitAdmin.declareBinding(bindingExchangeToRulingQueue());
-        rabbitAdmin.declareBinding(bindingExchangeToVoteQueue());
+        rabbitAdmin.declareQueue(sessionStartedQueue());
+        rabbitAdmin.declareQueue(sessionEndedQueue());
+        rabbitAdmin.declareBinding(bindingExchangeToSessionStartedQueue());
+        rabbitAdmin.declareBinding(bindingExchangeToSessionEndedQueue());
         return rabbitAdmin;
     }
 }
