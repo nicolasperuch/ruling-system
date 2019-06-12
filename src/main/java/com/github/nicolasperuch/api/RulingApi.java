@@ -2,6 +2,7 @@ package com.github.nicolasperuch.api;
 
 import com.github.nicolasperuch.api.dto.RulingDto;
 import com.github.nicolasperuch.api.dto.RulingResponse;
+import com.github.nicolasperuch.api.exception.handler.ExceptionHandlerApi;
 import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.service.RulingService;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/ruling")
-public class RulingApi {
+public class RulingApi extends ExceptionHandlerApi {
 
     @Autowired
     private RulingService rulingService;
