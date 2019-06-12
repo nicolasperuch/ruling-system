@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.stream.Stream;
 
 @RestController
@@ -24,7 +25,7 @@ public class RulingApi {
     private ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<?> createRuling(@RequestBody RulingDto rulingDto) {
+    public ResponseEntity<?> createRuling(@Valid @RequestBody RulingDto rulingDto) {
         return Stream
                 .of(rulingDto)
                 .map(dto -> rulingService.createRuling(dto))
@@ -34,7 +35,7 @@ public class RulingApi {
                 .get();
     }
 
-    public RulingResponse entityToResponseDto(RulingEntity rulingEntity){
+    private RulingResponse entityToResponseDto(RulingEntity rulingEntity){
         return modelMapper.map(rulingEntity, RulingResponse.class);
     }
 }

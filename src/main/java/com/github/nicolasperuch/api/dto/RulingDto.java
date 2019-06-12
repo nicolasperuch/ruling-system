@@ -1,6 +1,10 @@
 package com.github.nicolasperuch.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class RulingDto {
+
+    @NotNull(message = "Your ruling must have a name")
     private String name;
 
     public String getName() {
