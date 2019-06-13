@@ -1,5 +1,6 @@
 package com.github.nicolasperuch.api;
 
+import com.github.nicolasperuch.api.dto.OpenRulingForVoteDto;
 import com.github.nicolasperuch.api.dto.RulingDto;
 import com.github.nicolasperuch.api.dto.RulingResponse;
 import com.github.nicolasperuch.api.exception.handler.ExceptionHandlerApi;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.stream.Stream;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/ruling")
@@ -36,6 +39,12 @@ public class RulingApi extends ExceptionHandlerApi {
                 .map(ResponseEntity::ok)
                 .findFirst()
                 .get();
+    }
+
+    @ApiOperation(value = "Open a ruling for votation")
+    @PostMapping(value = "{id}/openForVote")
+    public ResponseEntity<?> openRulingForVote(@RequestBody OpenRulingForVoteDto openRulingForVoteDto) {
+        return ok(openRulingForVoteDto);
     }
 
     private RulingResponse entityToResponseDto(RulingEntity rulingEntity){
