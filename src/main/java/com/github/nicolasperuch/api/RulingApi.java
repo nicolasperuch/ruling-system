@@ -5,6 +5,7 @@ import com.github.nicolasperuch.api.dto.RulingResponse;
 import com.github.nicolasperuch.api.exception.handler.ExceptionHandlerApi;
 import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.service.RulingService;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class RulingApi extends ExceptionHandlerApi {
     @Autowired
     private ModelMapper modelMapper;
 
+    @ApiOperation(value = "Create a ruling")
     @PostMapping
     public ResponseEntity<?> createRuling(@Valid @RequestBody RulingDto rulingDto) {
         return Stream
