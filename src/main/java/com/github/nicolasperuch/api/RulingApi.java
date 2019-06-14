@@ -46,7 +46,7 @@ public class RulingApi extends ExceptionHandlerApi {
 
     @ApiOperation(value = "Open a ruling for votation")
     @PostMapping(value = "{id}/openForVote")
-    public ResponseEntity<?> openRulingForVote(@PathVariable("id") Long id,
+    public ResponseEntity<?> openRulingForVote(@PathVariable("id") Integer id,
                                                @RequestBody OpenRulingForVoteDto
                                                             openRulingForVoteDto) {
         return Stream
@@ -76,7 +76,7 @@ public class RulingApi extends ExceptionHandlerApi {
         return modelMapper.map(rulingEntity, RulingResponse.class);
     }
 
-    private OpenRulingForVoteModel buildOpenRulingForVoteModel(Long id, OpenRulingForVoteDto dto){
+    private OpenRulingForVoteModel buildOpenRulingForVoteModel(Integer id, OpenRulingForVoteDto dto){
         return new OpenRulingForVoteModel()
                     .setRulingId(id)
                     .setRemainingTime(dto.getRemainingTime());

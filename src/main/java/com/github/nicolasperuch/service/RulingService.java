@@ -12,6 +12,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RulingService extends RabbitRulingConfig {
 
@@ -29,9 +31,24 @@ public class RulingService extends RabbitRulingConfig {
     }
 
     public boolean openRulingForVote(OpenRulingForVoteModel openRulingForVoteModel) {
-        //should save into database here
-        feedExchange(openRulingForVoteModel);
-        return true;
+        Optional<RulingEntity> rulingEntity = rulingRepository.findById(openRulingForVoteModel.getRulingId());
+        if(isExistentRuling(rulingEntity)){
+            RulingEntity entity = setRulingStatusToOpenForVote(rulingEntity);
+            rulingRepository.save(entity);
+            feedExchange(openRulingForVoteModel);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isExistentRuling(Optional<RulingEntity> rulingEntity){
+        return rulingEntity.isPresent();
+    }
+
+    public RulingEntity setRulingStatusToOpenForVote(Optional<RulingEntity> rulingEntity){
+        RulingEntity entity = rulingEntity.get();
+        entity.setOpenForVote(true);
+        return entity;
     }
 
     public void feedExchange(OpenRulingForVoteModel openRulingForVoteModel) {
