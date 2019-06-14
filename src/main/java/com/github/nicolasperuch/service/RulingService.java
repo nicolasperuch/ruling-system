@@ -23,15 +23,13 @@ public class RulingService extends RabbitRulingConfig {
     private RulingRepository rulingRepository;
 
     public RulingEntity createRuling(RulingDto rulingDto){
-        RulingEntity rulingEntity = new RulingEntity();
-        rulingEntity.setName(rulingDto.getName());
-        rulingEntity.setOpenForVote(true);
+        RulingEntity rulingEntity = dtoToEntity(rulingDto);
         rulingRepository.save(rulingEntity);
         return rulingEntity;
     }
 
     public boolean openRulingForVote(OpenRulingForVoteModel openRulingForVoteModel) {
-        //should save into dabase here
+        //should save into database here
         feedExchange(openRulingForVoteModel);
         return true;
     }
@@ -45,4 +43,10 @@ public class RulingService extends RabbitRulingConfig {
         return new Message(bodyMessage.getBytes(), new MessageProperties());
     }
 
+    public RulingEntity dtoToEntity(RulingDto rulingDto){
+        RulingEntity rulingEntity = new RulingEntity();
+        rulingEntity.setName(rulingDto.getName());
+        rulingEntity.setOpenForVote(false);
+        return rulingEntity;
+    }
 }
