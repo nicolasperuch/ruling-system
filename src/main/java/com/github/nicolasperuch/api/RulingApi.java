@@ -2,6 +2,7 @@ package com.github.nicolasperuch.api;
 
 import com.github.nicolasperuch.api.dto.OpenRulingForVoteDto;
 import com.github.nicolasperuch.api.dto.RulingDto;
+import com.github.nicolasperuch.api.dto.RulingListResponse;
 import com.github.nicolasperuch.api.dto.RulingResponse;
 import com.github.nicolasperuch.api.exception.handler.ExceptionHandlerApi;
 import com.github.nicolasperuch.entity.RulingEntity;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -55,9 +57,19 @@ public class RulingApi extends ExceptionHandlerApi {
             .get();
     }
 
+    @ApiOperation(value = "Get All rulings")
     @GetMapping
     public ResponseEntity<?> getAll(){
-        return ok(rulingRepository.findAll());
+        return Stream
+                .of(rulingRepository.findAll())
+                .map(this::entityToRulingListResponseDto)
+                .map(ResponseEntity::ok)
+                .findFirst()
+                .get();
+    }
+
+    private RulingListResponse entityToRulingListResponseDto(List<RulingEntity> rulingEntityList){
+        return new RulingListResponse(rulingEntityList);
     }
 
     private RulingResponse entityToResponseDto(RulingEntity rulingEntity){
