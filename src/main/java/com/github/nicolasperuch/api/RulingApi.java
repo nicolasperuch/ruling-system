@@ -6,6 +6,7 @@ import com.github.nicolasperuch.api.dto.RulingResponse;
 import com.github.nicolasperuch.api.exception.handler.ExceptionHandlerApi;
 import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.model.OpenRulingForVoteModel;
+import com.github.nicolasperuch.repository.RulingRepository;
 import com.github.nicolasperuch.service.RulingService;
 import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,8 @@ public class RulingApi extends ExceptionHandlerApi {
     private RulingService rulingService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private RulingRepository rulingRepository;
 
     @ApiOperation(value = "Create a ruling")
     @PostMapping
@@ -50,6 +53,11 @@ public class RulingApi extends ExceptionHandlerApi {
             .map(ResponseEntity::ok)
             .findFirst()
             .get();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAll(){
+        return ok(rulingRepository.findAll());
     }
 
     private RulingResponse entityToResponseDto(RulingEntity rulingEntity){

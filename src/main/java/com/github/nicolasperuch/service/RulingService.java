@@ -4,6 +4,7 @@ import com.github.nicolasperuch.api.dto.RulingDto;
 import com.github.nicolasperuch.config.RabbitRulingConfig;
 import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.model.OpenRulingForVoteModel;
+import com.github.nicolasperuch.repository.RulingRepository;
 import com.google.gson.Gson;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
@@ -18,12 +19,14 @@ public class RulingService extends RabbitRulingConfig {
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private Gson gson;
+    @Autowired
+    private RulingRepository rulingRepository;
 
     public RulingEntity createRuling(RulingDto rulingDto){
         RulingEntity rulingEntity = new RulingEntity();
-        rulingEntity.setId(1);
         rulingEntity.setName(rulingDto.getName());
-        //should save into database here
+        rulingEntity.setOpenForVote(true);
+        rulingRepository.save(rulingEntity);
         return rulingEntity;
     }
 
