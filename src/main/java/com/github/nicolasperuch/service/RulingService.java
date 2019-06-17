@@ -37,13 +37,17 @@ public class RulingService extends RabbitRulingConfig {
 
     public RulingForVoteResponse openRulingForVote(OpenRulingForVoteModel openRulingForVoteModel) {
         Optional<RulingEntity> rulingEntity = rulingRepository.findById(openRulingForVoteModel.getRulingId());
-        if(rulingEntity.isPresent()){
+        if(rulingEntity.isPresent() && isRulingAbleToOpenToVote(rulingEntity.get())){
             RulingEntity entity = setRulingStatusToOpenForVote(rulingEntity.get());
             rulingRepository.save(entity);
             feedExchange(openRulingForVoteModel);
             return new RulingForVoteResponse(OPEN_RULING_MESSAGE);
         }
         return new RulingForVoteResponse(OPEN_RULING_ERROR_MESSAGE);
+    }
+
+    public boolean isRulingAbleToOpenToVote(RulingEntity rulingEntity){
+        return !rulingEntity.isOpenForVote();
     }
 
     public RulingEntity setRulingStatusToOpenForVote(RulingEntity rulingEntity){

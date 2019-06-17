@@ -58,7 +58,7 @@ public class RulingApi extends ExceptionHandlerApi {
     }
 
     @ApiOperation(value = "Get All rulings")
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<?> getAll(){
         return Stream
                 .of(rulingRepository.findAll())
