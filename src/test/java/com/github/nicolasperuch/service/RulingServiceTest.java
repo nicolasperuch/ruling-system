@@ -103,6 +103,19 @@ public class RulingServiceTest {
         assertEquals(EXPECTED_VOTE_RESPONSE_ERROR_MESSAGE, voteResponse.getMessage());
     }
 
+    @Test
+    public void isRulingAbleToVoteWhenRulingEntityOpenForVoteIsFalseThenShouldReturnTrue(){
+        RulingEntity rulingEntity = new RulingEntity();
+        rulingEntity.setOpenForVote(false);
+        assertTrue(rulingService.isRulingAbleToOpenToVote(rulingEntity));
+    }
+
+    @Test
+    public void isRulingAbleToVoteWhenRulingEntityOpenForVoteIsTrueThenShouldReturnFalse(){
+        RulingEntity rulingEntity = new RulingEntity();
+        rulingEntity.setOpenForVote(true);
+        assertFalse(rulingService.isRulingAbleToOpenToVote(rulingEntity));
+    }
 
     public RulingDto buildRulingDtoRequest(){
         RulingDto rulingDto = new RulingDto();
