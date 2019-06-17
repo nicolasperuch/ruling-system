@@ -1,6 +1,7 @@
 package com.github.nicolasperuch.service;
 
 import com.github.nicolasperuch.api.dto.RulingDto;
+import com.github.nicolasperuch.api.dto.RulingForVoteResponse;
 import com.github.nicolasperuch.config.RabbitRulingConfig;
 import com.github.nicolasperuch.entity.RulingEntity;
 import com.github.nicolasperuch.model.OpenRulingForVoteModel;
@@ -23,6 +24,8 @@ public class RulingService extends RabbitRulingConfig {
     private Gson gson;
     @Autowired
     private RulingRepository rulingRepository;
+    private final String OPEN_RULING_MESSAGE = "Ruling opened for vote succesfully";
+    private final String OPEN_RULING_ERROR_MESSAGE = "Was not possible open this ruling for vote";
 
     public RulingEntity createRuling(RulingDto rulingDto){
         RulingEntity rulingEntity = dtoToEntity(rulingDto);
@@ -30,15 +33,15 @@ public class RulingService extends RabbitRulingConfig {
         return rulingEntity;
     }
 
-    public boolean openRulingForVote(OpenRulingForVoteModel openRulingForVoteModel) {
+    public RulingForVoteResponse openRulingForVote(OpenRulingForVoteModel openRulingForVoteModel) {
         Optional<RulingEntity> rulingEntity = rulingRepository.findById(openRulingForVoteModel.getRulingId());
         if(isExistentRuling(rulingEntity)){
             RulingEntity entity = setRulingStatusToOpenForVote(rulingEntity);
             rulingRepository.save(entity);
             feedExchange(openRulingForVoteModel);
-            return true;
+            return new RulingForVoteResponse(OPEN_RULING_MESSAGE);
         }
-        return false;
+        return new RulingForVoteResponse(OPEN_RULING_ERROR_MESSAGE);
     }
 
     public boolean isExistentRuling(Optional<RulingEntity> rulingEntity){
