@@ -34,7 +34,7 @@ public class RulingServiceTest {
     private Gson gson;
     private final Long EXPECTED_BODY_BYTE_SIZE = 53L;
     private final String EXPECTED_VOTE_RESPONSE_SUCCESS_MESSAGE = "Ruling opened for vote succesfully";
-    private final String EXPECTED_VOTE_RESPONSE_ERROR_MESSAGE = "Was not possible open this ruling for vote";
+    private final String EXPECTED_VOTE_RESPONSE_ERROR_MESSAGE = "It Was not possible open this ruling for vote";
 
     @Test
     public void setRulingStatusToOpenForVoteWhenStatusIsFalseThenShouldReturnTrue(){

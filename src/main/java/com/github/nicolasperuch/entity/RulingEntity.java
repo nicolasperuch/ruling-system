@@ -39,4 +39,14 @@ public class RulingEntity {
     public void setOpenForVote(boolean openForVote) {
         this.openForVote = openForVote;
     }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("RulingEntity{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", openForVote=").append(openForVote);
+        sb.append('}');
+        return sb.toString();
+    }
 }
